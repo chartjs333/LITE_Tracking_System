@@ -4,14 +4,14 @@ import { useNavigate } from 'react-router-dom';
 
 interface User {
   id: string;
-  email: string;
-  name: string;
+  username: string;
+  centerId: string;
 }
 
 interface AuthContextType {
   user: User | null;
   isAuthenticated: boolean;
-  login: (email: string, password: string) => Promise<void>;
+  login: (username: string, password: string, centerId: string) => Promise<void>;
   logout: () => Promise<void>;
 }
 
@@ -25,9 +25,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   React.useEffect(() => {
     const checkAuth = async () => {
       try {
-        // const response = await axios.get('/api/auth/session');
-        // setUser(response.data.user);
-        // Mock authentication
         const savedUser = localStorage.getItem('user');
         if (savedUser) {
           setUser(JSON.parse(savedUser));
@@ -39,11 +36,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     checkAuth();
   }, []);
 
-  const login = useCallback(async (email: string, password: string) => {
+  const login = useCallback(async (username: string, password: string, centerId: string) => {
     try {
-      // const response = await axios.post('/api/auth/login', { email, password });
+      // In a real application, this would be an API call to verify credentials
+      // const response = await axios.post('/api/auth/login', { username, password, centerId });
+      
       // Mock successful login
-      const mockUser = { id: '1', email, name: 'Test User' };
+      const mockUser = { id: '1', username, centerId };
       setUser(mockUser);
       localStorage.setItem('user', JSON.stringify(mockUser));
       navigate('/');
@@ -55,6 +54,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const logout = useCallback(async () => {
     try {
+      // In a real application, this would be an API call to logout
       // await axios.post('/api/auth/logout');
       setUser(null);
       localStorage.removeItem('user');

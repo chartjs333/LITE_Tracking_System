@@ -10,10 +10,12 @@ import {
   X,
   Loader2,
   QrCode,
-  Plus
+  Plus,
+  Keyboard
 } from 'lucide-react';
 import QRCodeScanner from '../components/QRCodeScanner';
 import QRCodeGenerator from '../components/QRCodeGenerator';
+import ManualSampleInput from '../components/ManualSampleInput';
 
 interface Sample {
   id: string;
@@ -44,6 +46,7 @@ const SamplesPage: React.FC = () => {
   const [showStats, setShowStats] = useState(false);
   const [showScanner, setShowScanner] = useState(false);
   const [showQRCode, setShowQRCode] = useState<string | null>(null);
+  const [showManualInput, setShowManualInput] = useState(false);
   const [sortConfig, setSortConfig] = useState<{
     key: keyof Sample;
     direction: 'asc' | 'desc';
@@ -172,15 +175,22 @@ const SamplesPage: React.FC = () => {
           <h1 className="text-2xl font-bold text-gray-900">Samples List</h1>
           <div className="flex gap-4">
             <button
+              onClick={() => setShowManualInput(true)}
+              className="btn-secondary"
+            >
+              <Keyboard className="h-5 w-5 mr-2" />
+              Manual Entry
+            </button>
+            <button
               onClick={() => setShowScanner(true)}
-              className="inline-flex items-center px-4 py-2 bg-amber-500 hover:bg-amber-600 text-white rounded-md shadow-sm transition-colors duration-150"
+              className="btn-primary"
             >
               <QrCode className="h-5 w-5 mr-2" />
               Scan QR
             </button>
             <button
               onClick={() => setShowStats(!showStats)}
-              className="inline-flex items-center px-4 py-2 bg-amber-500 hover:bg-amber-600 text-white rounded-md shadow-sm transition-colors duration-150"
+              className="btn-secondary"
             >
               <BarChart2 className="h-5 w-5 mr-2" />
               {showStats ? 'Hide Stats' : 'Show Stats'}
@@ -449,6 +459,10 @@ const SamplesPage: React.FC = () => {
               </div>
             </div>
           </div>
+        )}
+
+        {showManualInput && (
+          <ManualSampleInput onClose={() => setShowManualInput(false)} />
         )}
       </div>
     </div>
